@@ -1,0 +1,35 @@
+{
+	"name": "Load_Sat_Customer",
+	"properties": {
+		"type": "MappingDataFlow",
+		"typeProperties": {
+			"sources": [
+				{
+					"dataset": {
+						"referenceName": "PostgreSQL_CustomerInfo",
+						"type": "DatasetReference"
+					},
+					"name": "CustomerInfo"
+				}
+			],
+			"sinks": [
+				{
+					"dataset": {
+						"referenceName": "SatCustomer",
+						"type": "DatasetReference"
+					},
+					"name": "SatCustomer"
+				}
+			],
+			"transformations": [
+				{
+					"name": "SelectTransformation"
+				},
+				{
+					"name": "DataConversion"
+				}
+			],
+			"script": "source(output(\n\t\tcustomer_id as string,\n\t\tsalutation as string,\n\t\tfirst_name as string,\n\t\tlast_name as string,\n\t\tdob as date,\n\t\tbirth_country as string,\n\t\temail_address as string,\n\t\tphone_number as string,\n\t\tphone_number_type as string,\n\t\taddress_id as string,\n\t\tcountry as string,\n\t\tcounty as string,\n\t\tstate as string,\n\t\tcity as string,\n\t\tstreet_number as string,\n\t\tstreet_name as string,\n\t\tzip as string\n\t),\n\tallowSchemaDrift: true,\n\tvalidateSchema: false,\n\tisolationLevel: 'READ_UNCOMMITTED',\n\tformat: 'table') ~> CustomerInfo\nCustomerInfo select(mapColumn(\n\t\tcustomer_id,\n\t\tsalutation,\n\t\tfirst_name,\n\t\tlast_name,\n\t\tdob,\n\t\tbirth_country,\n\t\temail_address\n\t),\n\tskipDuplicateMapInputs: true,\n\tskipDuplicateMapOutputs: true) ~> SelectTransformation\nSelectTransformation derive(HK_CUSTOMER_ID = md5(customer_id),\n\t\tDatetime = currentDate(),\n\t\tREC_SRC = \"Customer_Info\") ~> DataConversion\nDataConversion sink(allowSchemaDrift: true,\n\tvalidateSchema: false,\n\tdeletable:false,\n\tinsertable:true,\n\tupdateable:false,\n\tupsertable:false,\n\tformat: 'table',\n\tskipDuplicateMapInputs: true,\n\tskipDuplicateMapOutputs: true,\n\terrorHandlingOption: 'stopOnFirstError',\n\tmapColumn(\n\t\tHK_CUSTOMER_ID,\n\t\tsalutation,\n\t\tfirst_name,\n\t\tlast_name,\n\t\tdob,\n\t\tbirth_country,\n\t\temail_address,\n\t\tLOAD_DTS = Datetime,\n\t\tREC_SRC\n\t)) ~> SatCustomer"
+		}
+	}
+}

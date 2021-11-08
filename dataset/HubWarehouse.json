@@ -1,0 +1,36 @@
+{
+	"name": "HubWarehouse",
+	"properties": {
+		"linkedServiceName": {
+			"referenceName": "AzureSqlDatabase1",
+			"type": "LinkedServiceReference"
+		},
+		"annotations": [],
+		"type": "AzureSqlTable",
+		"schema": [
+			{
+				"name": "HK_WAREHOUSE_ID",
+				"type": "varbinary"
+			},
+			{
+				"name": "WAREHOUSE_ID",
+				"type": "varchar"
+			},
+			{
+				"name": "LOAD_DTS",
+				"type": "datetime",
+				"precision": 23,
+				"scale": 3
+			},
+			{
+				"name": "REC_SRC",
+				"type": "varchar"
+			}
+		],
+		"typeProperties": {
+			"schema": "dbo",
+			"table": "HUB_WAREHOUSE"
+		}
+	},
+	"type": "Microsoft.DataFactory/factories/datasets"
+}

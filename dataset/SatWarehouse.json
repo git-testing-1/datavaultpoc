@@ -1,0 +1,64 @@
+{
+	"name": "SatWarehouse",
+	"properties": {
+		"linkedServiceName": {
+			"referenceName": "AzureSqlDatabase1",
+			"type": "LinkedServiceReference"
+		},
+		"annotations": [],
+		"type": "AzureSqlTable",
+		"schema": [
+			{
+				"name": "HK_WAREHOUSE_ID",
+				"type": "varbinary"
+			},
+			{
+				"name": "LOAD_DTS",
+				"type": "datetime",
+				"precision": 23,
+				"scale": 3
+			},
+			{
+				"name": "WAREHOUSE_NAME",
+				"type": "varchar"
+			},
+			{
+				"name": "STREET_NUMBER",
+				"type": "varchar"
+			},
+			{
+				"name": "STREET_NAME",
+				"type": "varchar"
+			},
+			{
+				"name": "STREET_TYPE",
+				"type": "varchar"
+			},
+			{
+				"name": "CITY",
+				"type": "varchar"
+			},
+			{
+				"name": "STATE",
+				"type": "varchar"
+			},
+			{
+				"name": "ZIP",
+				"type": "varchar"
+			},
+			{
+				"name": "COUNTRY",
+				"type": "varchar"
+			},
+			{
+				"name": "REC_SRC",
+				"type": "varchar"
+			}
+		],
+		"typeProperties": {
+			"schema": "dbo",
+			"table": "SAT_WAREHOUSE"
+		}
+	},
+	"type": "Microsoft.DataFactory/factories/datasets"
+}

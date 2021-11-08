@@ -1,0 +1,9 @@
+{
+	"name": "DataVaultFactory",
+	"location": "eastus",
+	"identity": {
+		"type": "SystemAssigned",
+		"principalId": "85a50b70-0b01-475b-bb4d-2c03ed23ccae",
+		"tenantId": "a45fe71a-f480-4e42-ad5e-aff33165aa35"
+	}
+}

@@ -1,0 +1,165 @@
+{
+	"name": "StoreSource",
+	"properties": {
+		"linkedServiceName": {
+			"referenceName": "BlobStorageLinkedServices",
+			"type": "LinkedServiceReference"
+		},
+		"annotations": [],
+		"type": "DelimitedText",
+		"typeProperties": {
+			"location": {
+				"type": "AzureBlobStorageLocation",
+				"fileName": "STORE_INFO.csv",
+				"container": "oltp"
+			},
+			"columnDelimiter": ",",
+			"escapeChar": "\\",
+			"firstRowAsHeader": true,
+			"quoteChar": "\""
+		},
+		"schema": [
+			{
+				"name": "STORE_ID",
+				"type": "String"
+			},
+			{
+				"name": "WAREHOUSE_ID",
+				"type": "String"
+			},
+			{
+				"name": "WAREHOUSE_NAME",
+				"type": "String"
+			},
+			{
+				"name": "WAREHOUSE_COUNTRY",
+				"type": "String"
+			},
+			{
+				"name": "WAREHOUSE_STATE",
+				"type": "String"
+			},
+			{
+				"name": "WAREHOUSE_CITY",
+				"type": "String"
+			},
+			{
+				"name": "WAREHOUSE_STREET_NUMBER",
+				"type": "String"
+			},
+			{
+				"name": "WAREHOUSE_STREET_NAME",
+				"type": "String"
+			},
+			{
+				"name": "WAREHOUSE_STREET_TYPE",
+				"type": "String"
+			},
+			{
+				"name": "WAREHOUSE_ZIP",
+				"type": "String"
+			},
+			{
+				"name": "STORE_NAME",
+				"type": "String"
+			},
+			{
+				"name": "STORE_COUNTRY",
+				"type": "String"
+			},
+			{
+				"name": "STORE_COUNTY",
+				"type": "String"
+			},
+			{
+				"name": "STORE_STATE",
+				"type": "String"
+			},
+			{
+				"name": "STORE_CITY",
+				"type": "String"
+			},
+			{
+				"name": "STORE_STREET_NUMBER",
+				"type": "String"
+			},
+			{
+				"name": "STORE_STREET_NAME",
+				"type": "String"
+			},
+			{
+				"name": "STORE_ZIP",
+				"type": "String"
+			},
+			{
+				"name": "NUMBER_EMPLOYEES",
+				"type": "String"
+			},
+			{
+				"name": "WORKING_HOURS",
+				"type": "String"
+			},
+			{
+				"name": "MANAGER_NAME",
+				"type": "String"
+			},
+			{
+				"name": "SALES_PERSON_ID",
+				"type": "String"
+			},
+			{
+				"name": "SALES_PERSON_TYP",
+				"type": "String"
+			},
+			{
+				"name": "SALES_PERSON_TITLE",
+				"type": "String"
+			},
+			{
+				"name": "SALES_PERSON_FIRST_NAME",
+				"type": "String"
+			},
+			{
+				"name": "SALES_PERSON_LAST_NAME",
+				"type": "String"
+			},
+			{
+				"name": "SALES_PERSON_SUFFIX",
+				"type": "String"
+			},
+			{
+				"name": "SALES_PERSON_EMAIL_ADDRESS",
+				"type": "String"
+			},
+			{
+				"name": "SALES_PERSON_PHONE_NUMBER",
+				"type": "String"
+			},
+			{
+				"name": "SALES_PERSON_PHONE_NUMBER_TYPE",
+				"type": "String"
+			},
+			{
+				"name": "SALES_QUOTA",
+				"type": "String"
+			},
+			{
+				"name": "SALES_PERSON_BONUS",
+				"type": "String"
+			},
+			{
+				"name": "COMMISSION_PCT",
+				"type": "String"
+			},
+			{
+				"name": "SALES_YTD",
+				"type": "String"
+			},
+			{
+				"name": "SALES_LAST_YEAR",
+				"type": "String"
+			}
+		]
+	},
+	"type": "Microsoft.DataFactory/factories/datasets"
+}
