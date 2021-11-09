@@ -12,24 +12,13 @@
 					"name": "StoreSource"
 				}
 			],
-			"sinks": [
-				{
-					"dataset": {
-						"referenceName": "HubStore",
-						"type": "DatasetReference"
-					},
-					"name": "HubStore"
-				}
-			],
+			"sinks": [],
 			"transformations": [
 				{
 					"name": "SelectTransformation"
-				},
-				{
-					"name": "DataConversion"
 				}
 			],
-			"script": "source(output(\n\t\tSTORE_ID as string,\n\t\tWAREHOUSE_ID as string,\n\t\tWAREHOUSE_NAME as string,\n\t\tWAREHOUSE_COUNTRY as string,\n\t\tWAREHOUSE_STATE as string,\n\t\tWAREHOUSE_CITY as string,\n\t\tWAREHOUSE_STREET_NUMBER as string,\n\t\tWAREHOUSE_STREET_NAME as string,\n\t\tWAREHOUSE_STREET_TYPE as string,\n\t\tWAREHOUSE_ZIP as string,\n\t\tSTORE_NAME as string,\n\t\tSTORE_COUNTRY as string,\n\t\tSTORE_COUNTY as string,\n\t\tSTORE_STATE as string,\n\t\tSTORE_CITY as string,\n\t\tSTORE_STREET_NUMBER as string,\n\t\tSTORE_STREET_NAME as string,\n\t\tSTORE_ZIP as string,\n\t\tNUMBER_EMPLOYEES as string,\n\t\tWORKING_HOURS as string,\n\t\tMANAGER_NAME as string,\n\t\tSALES_PERSON_ID as string,\n\t\tSALES_PERSON_TYP as string,\n\t\tSALES_PERSON_TITLE as string,\n\t\tSALES_PERSON_FIRST_NAME as string,\n\t\tSALES_PERSON_LAST_NAME as string,\n\t\tSALES_PERSON_SUFFIX as string,\n\t\tSALES_PERSON_EMAIL_ADDRESS as string,\n\t\tSALES_PERSON_PHONE_NUMBER as string,\n\t\tSALES_PERSON_PHONE_NUMBER_TYPE as string,\n\t\tSALES_QUOTA as string,\n\t\tSALES_PERSON_BONUS as string,\n\t\tCOMMISSION_PCT as string,\n\t\tSALES_YTD as string,\n\t\tSALES_LAST_YEAR as string\n\t),\n\tallowSchemaDrift: true,\n\tvalidateSchema: false,\n\tignoreNoFilesFound: false) ~> StoreSource\nStoreSource select(mapColumn(\n\t\tSTORE_ID\n\t),\n\tskipDuplicateMapInputs: true,\n\tskipDuplicateMapOutputs: true) ~> SelectTransformation\nSelectTransformation derive(HK_STORE_ID = md5(STORE_ID),\n\t\tDatetime = currentDate(),\n\t\tRecordSource = \"Store_Info\") ~> DataConversion\nDataConversion sink(allowSchemaDrift: true,\n\tvalidateSchema: false,\n\tinput(\n\t\tHK_STORE_ID as binary,\n\t\tSTORE_ID as string,\n\t\tLOAD_DTS as timestamp,\n\t\tREC_SRC as string\n\t),\n\tdeletable:false,\n\tinsertable:false,\n\tupdateable:false,\n\tupsertable:true,\n\tformat: 'table',\n\tskipDuplicateMapInputs: true,\n\tskipDuplicateMapOutputs: true,\n\terrorHandlingOption: 'stopOnFirstError',\n\tmapColumn(\n\t\tSTORE_ID,\n\t\tHK_STORE_ID,\n\t\tLOAD_DTS = Datetime,\n\t\tREC_SRC = RecordSource\n\t)) ~> HubStore"
+			"script": "source(output(\n\t\tSTORE_ID as string,\n\t\tWAREHOUSE_ID as string,\n\t\tWAREHOUSE_NAME as string,\n\t\tWAREHOUSE_COUNTRY as string,\n\t\tWAREHOUSE_STATE as string,\n\t\tWAREHOUSE_CITY as string,\n\t\tWAREHOUSE_STREET_NUMBER as string,\n\t\tWAREHOUSE_STREET_NAME as string,\n\t\tWAREHOUSE_STREET_TYPE as string,\n\t\tWAREHOUSE_ZIP as string,\n\t\tSTORE_NAME as string,\n\t\tSTORE_COUNTRY as string,\n\t\tSTORE_COUNTY as string,\n\t\tSTORE_STATE as string,\n\t\tSTORE_CITY as string,\n\t\tSTORE_STREET_NUMBER as string,\n\t\tSTORE_STREET_NAME as string,\n\t\tSTORE_ZIP as string,\n\t\tNUMBER_EMPLOYEES as string,\n\t\tWORKING_HOURS as string,\n\t\tMANAGER_NAME as string,\n\t\tSALES_PERSON_ID as string,\n\t\tSALES_PERSON_TYP as string,\n\t\tSALES_PERSON_TITLE as string,\n\t\tSALES_PERSON_FIRST_NAME as string,\n\t\tSALES_PERSON_LAST_NAME as string,\n\t\tSALES_PERSON_SUFFIX as string,\n\t\tSALES_PERSON_EMAIL_ADDRESS as string,\n\t\tSALES_PERSON_PHONE_NUMBER as string,\n\t\tSALES_PERSON_PHONE_NUMBER_TYPE as string,\n\t\tSALES_QUOTA as string,\n\t\tSALES_PERSON_BONUS as string,\n\t\tCOMMISSION_PCT as string,\n\t\tSALES_YTD as string,\n\t\tSALES_LAST_YEAR as string\n\t),\n\tallowSchemaDrift: true,\n\tvalidateSchema: false,\n\tignoreNoFilesFound: false) ~> StoreSource\nStoreSource select(mapColumn(\n\t\tSTORE_ID\n\t),\n\tskipDuplicateMapInputs: true,\n\tskipDuplicateMapOutputs: true) ~> SelectTransformation"
 		}
 	}
 }
