@@ -2,7 +2,7 @@
 	"name": "StoreSource",
 	"properties": {
 		"linkedServiceName": {
-			"referenceName": "BlobStorageLinkedServices",
+			"referenceName": "AzureBlobStorage1",
 			"type": "LinkedServiceReference"
 		},
 		"annotations": [],
@@ -11,7 +11,7 @@
 			"location": {
 				"type": "AzureBlobStorageLocation",
 				"fileName": "STORE_INFO.csv",
-				"container": "oltp"
+				"container": "datavault-src"
 			},
 			"columnDelimiter": ",",
 			"escapeChar": "\\",
