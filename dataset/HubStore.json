@@ -7,7 +7,26 @@
 		},
 		"annotations": [],
 		"type": "AzureSqlTable",
-		"schema": [],
+		"schema": [
+			{
+				"name": "HK_STORE_ID",
+				"type": "varbinary"
+			},
+			{
+				"name": "STORE_ID",
+				"type": "varchar"
+			},
+			{
+				"name": "LOAD_DTS",
+				"type": "datetime",
+				"precision": 23,
+				"scale": 3
+			},
+			{
+				"name": "REC_SRC",
+				"type": "varchar"
+			}
+		],
 		"typeProperties": {
 			"schema": "dbo",
 			"table": "HUB_STORE"
