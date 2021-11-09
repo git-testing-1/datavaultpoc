@@ -483,6 +483,97 @@
 			"dependsOn": [
 				"[concat(variables('factoryId'), '/managedVirtualNetworks/default')]"
 			]
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/Store-load')]",
+			"type": "Microsoft.DataFactory/factories/dataflows",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"type": "MappingDataFlow",
+				"typeProperties": {
+					"sources": [
+						{
+							"dataset": {
+								"referenceName": "StoreSource",
+								"type": "DatasetReference"
+							},
+							"name": "satSource"
+						}
+					],
+					"sinks": [
+						{
+							"dataset": {
+								"referenceName": "HUB_Store",
+								"type": "DatasetReference"
+							},
+							"name": "Hubstore"
+						}
+					],
+					"transformations": [
+						{
+							"name": "storeIdselect"
+						},
+						{
+							"name": "FilterStoreId"
+						},
+						{
+							"name": "DerivedColumn1"
+						}
+					],
+					"script": "source(output(\n\t\tSTORE_ID as string,\n\t\tWAREHOUSE_ID as string,\n\t\tWAREHOUSE_NAME as string,\n\t\tWAREHOUSE_COUNTRY as string,\n\t\tWAREHOUSE_STATE as string,\n\t\tWAREHOUSE_CITY as string,\n\t\tWAREHOUSE_STREET_NUMBER as string,\n\t\tWAREHOUSE_STREET_NAME as string,\n\t\tWAREHOUSE_STREET_TYPE as string,\n\t\tWAREHOUSE_ZIP as string,\n\t\tSTORE_NAME as string,\n\t\tSTORE_COUNTRY as string,\n\t\tSTORE_COUNTY as string,\n\t\tSTORE_STATE as string,\n\t\tSTORE_CITY as string,\n\t\tSTORE_STREET_NUMBER as string,\n\t\tSTORE_STREET_NAME as string,\n\t\tSTORE_ZIP as string,\n\t\tNUMBER_EMPLOYEES as string,\n\t\tWORKING_HOURS as string,\n\t\tMANAGER_NAME as string,\n\t\tSALES_PERSON_ID as string,\n\t\tSALES_PERSON_TYP as string,\n\t\tSALES_PERSON_TITLE as string,\n\t\tSALES_PERSON_FIRST_NAME as string,\n\t\tSALES_PERSON_LAST_NAME as string,\n\t\tSALES_PERSON_SUFFIX as string,\n\t\tSALES_PERSON_EMAIL_ADDRESS as string,\n\t\tSALES_PERSON_PHONE_NUMBER as string,\n\t\tSALES_PERSON_PHONE_NUMBER_TYPE as string,\n\t\tSALES_QUOTA as string,\n\t\tSALES_PERSON_BONUS as string,\n\t\tCOMMISSION_PCT as string,\n\t\tSALES_YTD as string,\n\t\tSALES_LAST_YEAR as string\n\t),\n\tallowSchemaDrift: true,\n\tvalidateSchema: false,\n\tignoreNoFilesFound: false) ~> satSource\nsatSource select(mapColumn(\n\t\tStore_ID = STORE_ID\n\t),\n\tskipDuplicateMapInputs: true,\n\tskipDuplicateMapOutputs: true) ~> storeIdselect\nstoreIdselect filter(Store_ID=='AAAAAAAAADBAAAAA') ~> FilterStoreId\nFilterStoreId derive(HK_Store_ID = md5(Store_ID),\n\t\tLoad_date_time = currentDate(),\n\t\tRec_src = 'HUB_LOAD') ~> DerivedColumn1\nDerivedColumn1 sink(allowSchemaDrift: true,\n\tvalidateSchema: false,\n\tinput(\n\t\tHK_STORE_ID as binary,\n\t\tSTORE_ID as string,\n\t\tLOAD_DTS as timestamp,\n\t\tREC_SRC as string\n\t),\n\tdeletable:false,\n\tinsertable:true,\n\tupdateable:false,\n\tupsertable:false,\n\tformat: 'table',\n\tskipDuplicateMapInputs: true,\n\tskipDuplicateMapOutputs: true,\n\terrorHandlingOption: 'stopOnFirstError',\n\tmapColumn(\n\t\tSTORE_ID = Store_ID,\n\t\tHK_STORE_ID = HK_Store_ID,\n\t\tLOAD_DTS = Load_date_time,\n\t\tREC_SRC = Rec_src\n\t)) ~> Hubstore"
+				}
+			},
+			"dependsOn": [
+				"[concat(variables('factoryId'), '/datasets/StoreSource')]",
+				"[concat(variables('factoryId'), '/datasets/HUB_Store')]"
+			]
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/Hubstore-load')]",
+			"type": "Microsoft.DataFactory/factories/pipelines",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"activities": [
+					{
+						"name": "Data flow1",
+						"type": "ExecuteDataFlow",
+						"dependsOn": [],
+						"policy": {
+							"timeout": "1.00:00:00",
+							"retry": 0,
+							"retryIntervalInSeconds": 30,
+							"secureOutput": false,
+							"secureInput": false
+						},
+						"userProperties": [],
+						"typeProperties": {
+							"dataflow": {
+								"referenceName": "Store-load",
+								"type": "DataFlowReference",
+								"parameters": {},
+								"datasetParameters": {
+									"satSource": {},
+									"Hubstore": {}
+								}
+							},
+							"staging": {},
+							"compute": {
+								"coreCount": 8,
+								"computeType": "General"
+							},
+							"traceLevel": "Fine"
+						}
+					}
+				],
+				"policy": {
+					"elapsedTimeMetric": {},
+					"cancelAfter": {}
+				},
+				"annotations": []
+			},
+			"dependsOn": [
+				"[concat(variables('factoryId'), '/dataflows/Store-load')]"
+			]
 		}
 	]
 }
