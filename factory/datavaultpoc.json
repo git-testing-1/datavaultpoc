@@ -1,0 +1,9 @@
+{
+	"name": "datavaultpoc",
+	"location": "eastus",
+	"identity": {
+		"type": "SystemAssigned",
+		"principalId": "6b56d8e3-424d-455a-b261-853af8ba97fb",
+		"tenantId": "a45fe71a-f480-4e42-ad5e-aff33165aa35"
+	}
+}
