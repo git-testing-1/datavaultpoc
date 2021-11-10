@@ -1,0 +1,35 @@
+{
+	"name": "HUB_Customer_Address",
+	"properties": {
+		"linkedServiceName": {
+			"referenceName": "AzureSqlDatabase1",
+			"type": "LinkedServiceReference"
+		},
+		"annotations": [],
+		"type": "AzureSqlTable",
+		"schema": [
+			{
+				"name": "HK_STORE_ID",
+				"type": "varbinary"
+			},
+			{
+				"name": "STORE_ID",
+				"type": "varchar"
+			},
+			{
+				"name": "LOAD_DTS",
+				"type": "datetime",
+				"precision": 23,
+				"scale": 3
+			},
+			{
+				"name": "REC_SRC",
+				"type": "varchar"
+			}
+		],
+		"typeProperties": {
+			"schema": "dbo",
+			"table": "SAT_CUSTOMER_Address"
+		}
+	}
+}
