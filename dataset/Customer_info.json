@@ -1,5 +1,5 @@
 {
-	"name": "AzurePostgreSql_datavault_copy1",
+	"name": "Customer_info",
 	"properties": {
 		"linkedServiceName": {
 			"referenceName": "AzurePostgreSql_nagarro_shared",
