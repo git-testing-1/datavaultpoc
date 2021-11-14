@@ -1,5 +1,5 @@
 {
-	"name": "HUB_Customer_Address",
+	"name": "SAT_Customer_Address",
 	"properties": {
 		"linkedServiceName": {
 			"referenceName": "AzureSqlDatabase1",
