@@ -13,10 +13,10 @@
 				},
 				{
 					"dataset": {
-						"referenceName": "HUB_Store",
+						"referenceName": "SAT_Customer_Address",
 						"type": "DatasetReference"
 					},
-					"name": "HubStore1"
+					"name": "satcustomeraddressprev"
 				}
 			],
 			"sinks": [
@@ -36,10 +36,10 @@
 					"name": "DerivedColumn1"
 				},
 				{
-					"name": "SatHubExists"
+					"name": "SatCustomerExists"
 				}
 			],
-			"script": "source(output(\n\t\tcustomer_id as string,\n\t\tsalutation as string,\n\t\tfirst_name as string,\n\t\tlast_name as string,\n\t\tdob as date,\n\t\tbirth_country as string,\n\t\temail_address as string,\n\t\tphone_number as string,\n\t\tphone_number_type as string,\n\t\taddress_id as string,\n\t\tcountry as string,\n\t\tcounty as string,\n\t\tstate as string,\n\t\tcity as string,\n\t\tstreet_number as string,\n\t\tstreet_name as string,\n\t\tzip as string\n\t),\n\tallowSchemaDrift: true,\n\tvalidateSchema: false,\n\tisolationLevel: 'READ_UNCOMMITTED',\n\tformat: 'table') ~> satCustomerAddress\nsource(output(\n\t\tHK_STORE_ID as binary,\n\t\tSTORE_ID as string,\n\t\tLOAD_DTS as timestamp,\n\t\tREC_SRC as string\n\t),\n\tallowSchemaDrift: true,\n\tvalidateSchema: false,\n\tisolationLevel: 'READ_UNCOMMITTED',\n\tformat: 'table') ~> HubStore1\nsatCustomerAddress select(mapColumn(\n\t\tcustomer_id,\n\t\tstreet_number,\n\t\tstreet_name,\n\t\tcity,\n\t\tcounty,\n\t\tstate,\n\t\tzip,\n\t\tcountry\n\t),\n\tskipDuplicateMapInputs: true,\n\tskipDuplicateMapOutputs: true) ~> customerselect\ncustomerselect derive(HK_CUSTOMER_ID = md5(customer_id),\n\t\tLOAD_DTS = currentDate(),\n\t\tREC_SRC = 'Customer Address Load') ~> DerivedColumn1\nDerivedColumn1, HubStore1 exists({} == STORE_ID,\n\tnegate:true,\n\tbroadcast: 'auto')~> SatHubExists\nSatHubExists sink(allowSchemaDrift: true,\n\tvalidateSchema: false,\n\tinput(\n\t\tHK_STORE_ID as binary,\n\t\tSTORE_ID as string,\n\t\tLOAD_DTS as timestamp,\n\t\tREC_SRC as string\n\t),\n\tdeletable:false,\n\tinsertable:true,\n\tupdateable:false,\n\tupsertable:false,\n\tformat: 'table',\n\tskipDuplicateMapInputs: true,\n\tskipDuplicateMapOutputs: true,\n\terrorHandlingOption: 'stopOnFirstError',\n\tmapColumn(\n\t\tSTORE_ID = customer_id,\n\t\tHK_STORE_ID = HK_Customer_ID,\n\t\tLOAD_DTS,\n\t\tREC_SRC\n\t)) ~> Hubstore"
+			"script": "source(output(\n\t\tcustomer_id as string,\n\t\tsalutation as string,\n\t\tfirst_name as string,\n\t\tlast_name as string,\n\t\tdob as date,\n\t\tbirth_country as string,\n\t\temail_address as string,\n\t\tphone_number as string,\n\t\tphone_number_type as string,\n\t\taddress_id as string,\n\t\tcountry as string,\n\t\tcounty as string,\n\t\tstate as string,\n\t\tcity as string,\n\t\tstreet_number as string,\n\t\tstreet_name as string,\n\t\tzip as string\n\t),\n\tallowSchemaDrift: true,\n\tvalidateSchema: false,\n\tisolationLevel: 'READ_UNCOMMITTED',\n\tformat: 'table') ~> satCustomerAddress\nsource(output(\n\t\tHK_STORE_ID as binary,\n\t\tSTORE_ID as string,\n\t\tLOAD_DTS as timestamp,\n\t\tREC_SRC as string\n\t),\n\tallowSchemaDrift: true,\n\tvalidateSchema: false,\n\tisolationLevel: 'READ_UNCOMMITTED',\n\tformat: 'table') ~> satcustomeraddressprev\nsatCustomerAddress select(mapColumn(\n\t\tcustomer_id,\n\t\tstreet_number,\n\t\tstreet_name,\n\t\tcity,\n\t\tcounty,\n\t\tstate,\n\t\tzip,\n\t\tcountry\n\t),\n\tskipDuplicateMapInputs: true,\n\tskipDuplicateMapOutputs: true) ~> customerselect\ncustomerselect derive(HK_CUSTOMER_ID = md5(customer_id),\n\t\tLOAD_DTS = currentDate(),\n\t\tREC_SRC = 'Customer Address Load') ~> DerivedColumn1\nDerivedColumn1, satcustomeraddressprev exists({} == STORE_ID,\n\tnegate:true,\n\tbroadcast: 'auto')~> SatCustomerExists\nSatCustomerExists sink(allowSchemaDrift: true,\n\tvalidateSchema: false,\n\tinput(\n\t\tHK_STORE_ID as binary,\n\t\tSTORE_ID as string,\n\t\tLOAD_DTS as timestamp,\n\t\tREC_SRC as string\n\t),\n\tdeletable:false,\n\tinsertable:true,\n\tupdateable:false,\n\tupsertable:false,\n\tformat: 'table',\n\tskipDuplicateMapInputs: true,\n\tskipDuplicateMapOutputs: true,\n\terrorHandlingOption: 'stopOnFirstError',\n\tmapColumn(\n\t\tSTORE_ID = customer_id,\n\t\tHK_STORE_ID = HK_Customer_ID,\n\t\tLOAD_DTS,\n\t\tREC_SRC\n\t)) ~> Hubstore"
 		}
 	}
 }
